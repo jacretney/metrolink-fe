@@ -1,8 +1,9 @@
-import TfgmClient from "../data/TfgmApi/TfgmClient";
-import TfgmAxiosClient from '../data/TfgmApi/TfgmAxiosClient';
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import { TramStopResponse } from "../data/TramStopResponse";
+import { Tram } from "../data/Tram";
 
-function getDueTime(status: string, minutes: string): string 
+function getDueTime(status: string, minutes: number): string 
 {
     if (status === 'Due') {
         return `${minutes} mins`;
@@ -12,50 +13,35 @@ function getDueTime(status: string, minutes: string): string
 }
 
 function TramTimetable() {
-    const client = useMemo(() => new TfgmClient(TfgmAxiosClient), []);
-
-    const [response, setResponse] = useState({
-        tram_0_destination: 'Loading...',
-        tram_0_arrival: '',
-        tram_1_destination: '',
-        tram_1_arrival: '',
-        message: '',
-    });
+    const [trams, setTrams] = useState<Tram[]>([]);
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         const interval = setInterval(() => {
-            fetch('/stops/1') // set this to 127967 when done
-            .then(async (response: any) => {
-                const { data } = await response.json();
-                
-                setResponse({
-                    tram_0_destination : data.tram_0_destination,
-                    tram_0_arrival: data.tram_0_arrival,
-                    tram_1_destination : data.tram_1_destination,
-                    tram_1_arrival: data.tram_1_arrival,
-                    message: data.message
-                })
-            });
+            axios.get<TramStopResponse>('/stops/129036')
+                .then(async response => {
+                    const { data } = response.data;
+
+                    setTrams(data.trams);
+                    setMessage(data.message ?? '');
+                });
         }, 5 * 1000);
 
         return () => clearInterval(interval);
-    }, [client]);
+    }, []);
 
   
     return (
         <div className="table">
-            <div className="row">
-                <p>{ response.tram_0_destination }</p>
-                <p>{ response.tram_0_arrival }</p>
-            </div>
+            {trams.map(tram => (
+                <div className="row">
+                    <p>{ tram.destination }</p>
+                    <p>{ getDueTime(tram.status, tram.wait) }</p>
+                </div>
+            ))}
 
             <div className="row">
-                <p>{ response.tram_1_destination }</p>
-                <p>{ response.tram_1_arrival }</p>
-            </div>
-
-            <div className="row">
-                <p className="text-center mt-4">{ response.message }</p>
+                <p className="text-center mt-4">{message}</p>
             </div>
         </div>
     )
