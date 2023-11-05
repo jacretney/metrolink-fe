@@ -24,14 +24,18 @@ function TramTimetable() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            client.fetchMetroLinkStopDetails(127854) // set this to 127967 when done
-            .then(data => setResponse({
-                tram_0_destination : data.Dest0,
-                tram_0_arrival: getDueTime(data.Status0, data.Wait0),
-                tram_1_destination : data.Dest1,
-                tram_1_arrival: getDueTime(data.Status2, data.Wait1),
-                message: `${data.MessageBoard}`
-            }));
+            fetch('/stops/1') // set this to 127967 when done
+            .then(async (response: any) => {
+                const { data } = await response.json();
+                
+                setResponse({
+                    tram_0_destination : data.tram_0_destination,
+                    tram_0_arrival: data.tram_0_arrival,
+                    tram_1_destination : data.tram_1_destination,
+                    tram_1_arrival: data.tram_1_arrival,
+                    message: data.message
+                })
+            });
         }, 5 * 1000);
 
         return () => clearInterval(interval);
