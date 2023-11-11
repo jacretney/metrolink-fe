@@ -1,0 +1,10 @@
+#tramTimetable .row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px;
+}
+
+#tramTimetableMessage {
+    font-size: 2rem;
+}
+

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import './index.style.css';
 
-import { TramStopResponse } from "../data/TramStopResponse";
-import { Tram } from "../data/Tram";
-import LoadingEllipsis from "./LoadingEllipsis";
-import Weather from "./Weather";
+import { TramStopResponse } from "../../data/TramStopResponse";
+import { Tram } from "../../data/Tram";
+import LoadingEllipsis from "../LoadingEllipsis";
 
 function getDueTime(status: string, minutes: number): string 
 {
@@ -74,7 +74,7 @@ function TramTimetable() {
     }
   
     return (
-        <div className="table">
+        <div id="tramTimetable">
             {trams.map(tram => (
                 <div className="row">
                     <p>{ tram.destination }</p>
@@ -82,15 +82,9 @@ function TramTimetable() {
                 </div>
             ))}
 
-            <div className="row">
-                <p className="text-center mt-4">{message}</p>
-            </div>
-
-            <div className="row">
-                <Weather />
-            </div>
+            <p id="tramTimetableMessage" className="text-center mt-4">{message}</p>
         </div>
     )
 }
 
-export default TramTimetable
+export default TramTimetable;

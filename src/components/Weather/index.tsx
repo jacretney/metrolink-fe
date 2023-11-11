@@ -1,6 +1,9 @@
 import {useEffect, useState} from "react";
 import axios from 'axios';
-import {WeatherData} from "../data/WeatherData";
+import './index.style.css';
+
+import {WeatherData} from "../../data/WeatherData";
+import WeatherCondition from "./WeatherCondition";
 
 const Weather = () => {
     const [weatherData, setWeatherData] = useState<WeatherData>({
@@ -22,11 +25,12 @@ const Weather = () => {
     }
 
     return (
-        <>
-            <p>{ weatherData.temperature }°c</p>
-            <img src={weatherData.condition.icon}  alt={weatherData.condition.text}/>
-            <p>{weatherData.condition.text}</p>
-        </>
+        <div id="weatherStickyWrapper">
+            <div id="weather">
+                <p id="weatherTemperature">{ weatherData.temperature }°c</p>
+                <WeatherCondition text={weatherData.condition.text} icon={weatherData.condition.icon}/>
+            </div>
+        </div>
     )
 }
 
