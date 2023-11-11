@@ -4,6 +4,7 @@ import axios from 'axios';
 import { TramStopResponse } from "../data/TramStopResponse";
 import { Tram } from "../data/Tram";
 import LoadingEllipsis from "./LoadingEllipsis";
+import {TramStop} from "../data/TramStop";
 
 function getDueTime(status: string, minutes: number): string 
 {
@@ -15,13 +16,36 @@ function getDueTime(status: string, minutes: number): string
 }
 
 function TramTimetable() {
+    const [stopId, setStopId] = useState(0);
     const [trams, setTrams] = useState<Tram[]>([]);
     const [message, setMessage] = useState('');
     const [errorCount, setErrorCount] = useState(0);
 
     useEffect(() => {
+        if (stopId !== 0) {
+            return;
+        }
+
+        axios.post<TramStopResponse>('/stops/search', {
+            name: 'New Islington',
+            direction: 'Incoming',
+        })
+            .then(response => {
+                const { data } = response.data;
+                setStopId(data.id);
+            })
+            .catch(error => {
+                setErrorCount(prev => prev + 1);
+            })
+    }, [stopId]);
+
+    useEffect(() => {
+        if (stopId === 0) {
+            return;
+        }
+
         const interval = setInterval(() => {
-            axios.get<TramStopResponse>('/stops/129036')
+            axios.get<TramStopResponse>(`/stops/${stopId}`)
                 .then(async response => {
                     const { data } = response.data;
                     
@@ -35,7 +59,7 @@ function TramTimetable() {
         }, 5 * 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [stopId]);
 
     if (errorCount > 0) {
         return (
