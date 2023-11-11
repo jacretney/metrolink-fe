@@ -17,7 +17,7 @@ const Time = () => {
         <p id="time">
             {time.getHours()}
             <span>:</span>
-            {time.getMinutes()}
+            {time.getMinutes().toString().padStart(2, '0')}
             <span>:</span>
             {time.getSeconds().toString().padStart(2, '0')}
         </p>

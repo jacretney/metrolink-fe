@@ -75,12 +75,14 @@ function TramTimetable() {
   
     return (
         <div id="tramTimetable">
-            {trams.map(tram => (
-                <div className="row">
-                    <p>{ tram.destination }</p>
-                    <p>{ getDueTime(tram.status, tram.wait) }</p>
-                </div>
-            ))}
+            <div>
+                {trams.map(tram => (
+                    <div className="row">
+                        <p>{ tram.destination }</p>
+                        <p>{ getDueTime(tram.status, tram.wait) }</p>
+                    </div>
+                ))}
+            </div>
 
             <p id="tramTimetableMessage" className="text-center mt-4">{message}</p>
         </div>
