@@ -4,7 +4,7 @@ import axios from 'axios';
 import { TramStopResponse } from "../data/TramStopResponse";
 import { Tram } from "../data/Tram";
 import LoadingEllipsis from "./LoadingEllipsis";
-import {TramStop} from "../data/TramStop";
+import Weather from "./Weather";
 
 function getDueTime(status: string, minutes: number): string 
 {
@@ -84,6 +84,10 @@ function TramTimetable() {
 
             <div className="row">
                 <p className="text-center mt-4">{message}</p>
+            </div>
+
+            <div className="row">
+                <Weather />
             </div>
         </div>
     )
