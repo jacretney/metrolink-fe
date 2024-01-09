@@ -5,6 +5,7 @@ import './index.style.css';
 import { TramStopResponse } from "../../data/TramStopResponse";
 import { Tram } from "../../data/Tram";
 import LoadingEllipsis from "../LoadingEllipsis";
+import getUrl from "../../helpers/url";
 
 function getDueTime(status: string, minutes: number): string 
 {
@@ -26,8 +27,8 @@ function TramTimetable() {
             return;
         }
 
-        axios.post<TramStopResponse>('/stops/search', {
-            name: 'New Islington',
+        axios.post<TramStopResponse>(getUrl('/stops/search'), {
+            name: 'Cornbrook',
             direction: 'Incoming',
         })
             .then(response => {
@@ -45,7 +46,7 @@ function TramTimetable() {
         }
 
         const interval = setInterval(() => {
-            axios.get<TramStopResponse>(`/stops/${stopId}`)
+            axios.get<TramStopResponse>(getUrl(`/stops/${stopId}`))
                 .then(async response => {
                     const { data } = response.data;
                     

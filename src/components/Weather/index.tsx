@@ -4,6 +4,7 @@ import './index.style.css';
 
 import {WeatherData} from "../../data/WeatherData";
 import WeatherCondition from "./WeatherCondition";
+import getUrl from "../../helpers/url";
 
 const _formatDate = (date: Date): string => {
     const year = date.getFullYear();
@@ -37,7 +38,7 @@ const Weather = () => {
     useEffect(() => {
         console.log('Fetching weather data');
 
-        axios.get('/weather', {
+        axios.get(getUrl('/weather'), {
             params: {
                 date: encodeURIComponent(_formatDate(time)),
             }

@@ -1,7 +1,7 @@
 # Caraontime frontend
 
 ## Requirements
-- Node.js (tested on v14)
+- Node.js version >= v18
 
 ## Getting started
 Setup and run the backend first.
